@@ -1,0 +1,145 @@
+1-->Constellation
+
+def pattern_A(grid,i):
+    if grid[0][i]=='.' and grid[0][i+1]=='*' and grid[0][i+2]=='.':
+        if grid[1][i]=='*' and grid[1][i+1]=='*' and grid[1][i+2]=='*':
+            if grid[2][i]=='*' and grid[2][i+1]=='.' and grid[2][i+2]=='*':
+                print('A',end='')
+
+def pattern_E(grid,i):
+    if grid[0][i]=='*' and grid[0][i+1]=='*' and grid[0][i+2]=='*':
+            if grid[1][i]=='*' and grid[1][i+1]=='*' and grid[1][i+2]=='*':
+                if grid[2][i]=='*' and grid[2][i+1]=='*' and grid[2][i+2]=='*':
+                    print('E',end='')
+
+def pattern_I(grid,i):
+    if grid[0][i]=='*' and grid[0][i+1]=='*' and grid[0][i+2]=='*':
+        if grid[1][i]=='.' and grid[1][i+1]=='*' and grid[1][i+2]=='.':
+            if grid[2][i]=='*' and grid[2][i+1]=='*' and grid[2][i+2]=='*':
+                print('I',end='')
+
+def pattern_O(grid,i):
+    if grid[0][i]=='*' and grid[0][i+1]=='*' and grid[0][i+2]=='*':
+        if grid[1][i]=='*' and grid[1][i+1]=='.' and grid[1][i+2]=='*':
+            if grid[2][i]=='*' and grid[2][i+1]=='*' and grid[2][i+2]=='*':
+                print('O',end='')
+
+def pattern_U(grid,i):
+    if grid[0][i]=='*' and grid[0][i+1]=='.' and grid[0][i+2]=='*':
+        if grid[1][i]=='*' and grid[1][i+1]=='.' and grid[1][i+2]=='*':
+            if grid[2][i]=='*' and grid[2][i+1]=='*' and grid[2][i+2]=='*':
+                print('U',end='')
+
+def find_string(grid,k):
+    for i in range(k-2):
+        if grid[0][i]=='#':
+            print('#',end="")
+            continue
+        pattern_A(grid,i)
+        pattern_E(grid,i)
+        pattern_I(grid,i)
+        pattern_O(grid,i)
+        pattern_U(grid,i)
+
+
+if __name__=="__main__":
+    k=int(input())
+    rows=3
+    grid=[]
+    while rows!=0:
+        grid.append(list(map(str,input().split())))
+        rows=rows-1
+    # print(grid)
+    find_string(grid,k)
+
+--------------------------------------------------------------------------------------------------------
+2-->prime time
+
+def calculate_no_of_hours(D,P):
+    return D//P
+
+def calculate(no_of_hours,R,i):
+    return R*no_of_hours+i
+
+def no_of_equivalent_prime_hours(primes_list,no_of_hours,D,P,temp):
+    if i in primes_list:
+        R,res=1,0
+        my_list=[i]
+        while 1:
+            res=calculate(no_of_hours,R,i)
+            if res>D:
+                break
+            if res in primes_list:
+                my_list.append(res)
+            else:
+                break
+            R+=1
+        if len(my_list)==P:
+            temp+=1
+    return temp
+
+if __name__=="__main__":
+    D,P=list(map(int,input().split()))
+    primes_list=[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499]
+    no_of_hours=calculate_no_of_hours(D,P)
+    temp=0
+    for i in range(2,no_of_hours+1):
+        temp=no_of_equivalent_prime_hours(primes_list,no_of_hours,D,P,temp)
+    print(temp,end="")
+
+----------------------------------------------------------------------------------------------------------
+3-->faulty keboard 
+sentence = input()
+faulty_letters = input()
+fl_length = len(faulty_letters)
+first_letter = fl_length
+other_letters = fl_length + 2
+count = 0
+flag=0
+if faulty_letters in sentence:
+    flag=1
+    n = sentence.count(faulty_letters)
+
+for i in sentence:
+    if i in faulty_letters:
+        if i == faulty_letters[0]:
+            count += first_letter
+        else:
+            count += other_letters
+
+if flag == 1:
+    count -= (n * ((first_letter+(fl_length-1)*other_letters) - 1))
+print(count)
+---------------------------------------------------------------------------------------------------------
+4-->hedger
+
+def calculate(R,value_of_max,ps,index_of_max):
+    return R+((value_of_max*ps[index_of_max])/100)
+
+
+def SalesMarket(ss,cs,ps,temp,R):
+    index_of_max=ps.index(max(ps))
+    value_of_max=cs[index_of_max]
+    for i in range(int(ss[1])):
+        if ss[2]>temp and ss[2]>=temp+value_of_max:
+            temp=temp+value_of_max
+            R=calculate(R,value_of_max,ps,index_of_max)
+
+        else:
+            print(int(R))
+            return R
+    ps.pop(index_of_max);cs.pop(index_of_max)
+    SalesMarket(ss,cs,ps,temp,R)
+
+
+stock=re.findall(r"[-+]?\d*\.\d+|\d+",input())
+cost=re.findall(r"[-+]?\d*\.\d+|\d+",input())
+profit=re.findall(r"[-+]?\d*\.\d+|\d+",input())
+
+
+ss,cs,ps=List_Items(stock,cost,profit)
+temp=0;R=0
+
+
+SalesMarket(ss,cs,ps,temp,R)
+-------------------------------------------
